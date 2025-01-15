@@ -1,0 +1,54 @@
+import random
+
+# List of words to guess
+word_list = ['python', 'hangman', 'developer', 'programming', 'computer', 'algorithm']
+# Choose a random word
+word_to_guess = random.choice(word_list)
+# Create a list of underscores representing the word
+guessed_word = ['_'] * len(word_to_guess)
+
+# Set number of allowed incorrect guesses
+attempts = 6
+guessed_letters = []
+
+def display_word():
+    return ' '.join(guessed_word)
+
+def play_hangman():
+    global attempts
+
+    print("Welcome to Hangman!")
+    print(f"The word has {len(word_to_guess)} letters.")
+    print(display_word())
+
+    while attempts > 0 and '_' in guessed_word:
+        guess = input(f"\nYou have {attempts} attempts left. Guess a letter: ").lower()
+
+        # Validate the input
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a valid single letter.")
+            continue
+        if guess in guessed_letters:
+            print(f"You've already guessed the letter '{guess}'. Try a different one.")
+            continue
+
+        guessed_letters.append(guess)
+
+        if guess in word_to_guess:
+            print(f"Good guess! The letter '{guess}' is in the word.")
+            for i in range(len(word_to_guess)):
+                if word_to_guess[i] == guess:
+                    guessed_word[i] = guess
+        else:
+            print(f"Oops! The letter '{guess}' is not in the word.")
+            attempts -= 1
+
+        print(display_word())
+
+    if '_' not in guessed_word:
+        print("\nCongratulations! You've guessed the word:", word_to_guess)
+    else:
+        print(f"\nGame Over! The word was: {word_to_guess}")
+
+if __name__ == "__main__":
+    play_hangman()
